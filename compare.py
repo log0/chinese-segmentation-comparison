@@ -77,16 +77,10 @@ body {
 
     return html
 
-raw_text = \
-"""
-我现在在北京
-歧义识别指一个字符串有多种分词方法，计算机难以给出到底哪一种分词算法才是正确的分词系列。如”表面的”可以分为”表面/的”或”表/面的”。计算机无法判断哪一种才是准确的分词系列。
-"""
-
 if __name__ == '__main__':
     mmseg.dict_load_defaults()
 
-    raw_text = _unicode(raw_text)
+    raw_text = _unicode(file('text.in').read())
     texts = raw_text.strip().split('\n')
 
     results = []
