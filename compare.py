@@ -41,6 +41,42 @@ def segment(text):
 
     return results
 
+def format_as_html(results):
+    html = '''
+<!DOCTYPE html>
+<html lang="en" id="chinese_segmentation_comparison" class="no_js">
+<head>
+<meta charset="utf-8" /><title id="pageTitle">Chinese Segmentation Comparison</title>
+<style>
+body {
+    font-family: Courier New, monospace;
+}
+</style>
+</head>
+    '''
+    html += '<table border="1">'
+    html += '<tr>'
+    html += '<th>Original</th>'
+
+    for algo in results[0].iterkeys():
+        if algo == 'original': continue
+        html += '<th>%s</th>' % (algo)
+
+    html += '</tr>'
+
+    for result in results:
+        html += '<tr>'
+        html += '<td>' + result['original'] + '</td>'
+        for algo, output in result.iteritems():
+            if algo == 'original': continue
+            html += '<td>' + output + '</td>'
+        html += '</tr>'
+
+    html += '</table>'
+    html += '</html>'
+
+    return html
+
 raw_text = \
 """
 我现在在北京
@@ -50,9 +86,19 @@ raw_text = \
 if __name__ == '__main__':
     mmseg.dict_load_defaults()
 
+    raw_text = _unicode(raw_text)
     texts = raw_text.strip().split('\n')
 
+    results = []
     for text in texts:
+        result = segment(text)
+        result['original'] = text
+        results.append(result)
+        """
         print '%12s : %s' % ('original', text)
-        for algo, result in segment(text).iteritems():
-            print '%12s : %s' % (algo, result)
+        for algo, output in result.iteritems():
+            print '%12s : %s' % (algo, output)
+        """
+
+    html = format_as_html(results)
+    print utf8(html)

@@ -9,4 +9,5 @@ Installation
 Usage
 -----
 
-- python compare.py
+- python compare.py > index.html
+- Then open the index.html generated to read the results
